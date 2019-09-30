@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Billetee</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+    <div id="app">
+        <Loader></Loader>
+        <Navbar
+                :login="login"
+                @update-login="changeStateLogin"></Navbar>
+        <router-view @update-login="changeStateLogin"></router-view>
+    </div>
+
+    <script src="assets/js/ofaa.js"></script>
+    <script src="assets/js/vue.js"></script>
+    <script src="assets/js/vue-router.js"></script>
+
+    <script src="components/Loader.js"></script>
+    <script src="components/Navbar.js"></script>
+    <script src="views/IndexView.js"></script>
+    <script src="views/LoginView.js"></script>
+    <script src="views/RegisterView.js"></script>
+
+    <script src="components/Wallet.js"></script>
+    <script src="views/WalletsView.js"></script>
+
+    <script src="components/Modal.js"></script>
+    <script src="components/Movement.js"></script>
+    <script src="views/MovementView.js"></script>
+
+    <script src="store/index.js"></script>
+    <script src="routes/index.js"></script>
+
+    <script src="app.js"></script>
+</body>
+</html>
