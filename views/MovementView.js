@@ -1,6 +1,6 @@
 const MovementView = {
-    template: 
-    `
+    template:
+        `
     <section class="container">
         <div class="row a-center">
             <h2>Movements</h2>
@@ -82,7 +82,7 @@ const MovementView = {
         </Modal>
     </section>
     `,
-    data(){
+    data() {
         return {
             movementsInformation: {
                 availableMoney: 0,
@@ -109,72 +109,111 @@ const MovementView = {
         }
     },
     methods: {
-        getMovements(){
-            ajax(`movements?token=${store.token}&wallet_id=${this.$route.params.id}`)
-            .then(async r => this.movements = await r.json())
+        getMovements() {
+            this.movements = [
+                {
+                    amount: '20000',
+                    type_movement_id: 1,
+                    commentary: 'Example movement',
+                    category_id: 1,
+                    type: {
+                        name: 'type 1'
+                    }
+                },
+                {
+                    amount: '50000',
+                    type_movement_id: 2,
+                    commentary: 'Example movement',
+                    category_id: 1,
+                    type: {
+                        name: 'type 2'
+                    }
+                },
+                {
+                    amount: '7000',
+                    type_movement_id: 3,
+                    commentary: 'Example movement',
+                    category_id: 1,
+                    type: {
+                        name: 'type 3'
+                    }
+                }
+            ];
+
+            this.types_movement = [
+                {
+                    id: 1,
+                    name: 'type 1'
+                },
+                {
+                    id: 2,
+                    name: 'type 2'
+                },
+                {
+                    id: 3,
+                    name: 'type 3'
+                }
+            ];
+
+            this.categories = [
+                {
+                    id: 1,
+                    name: 'category 1'
+                },
+                {
+                    id: 2,
+                    name: 'category 2'
+                },
+                {
+                    id: 3,
+                    name: 'category 3'
+                }
+            ]
         },
-        back(){
+        back() {
             this.$router.push({name: 'wallets'});
         },
-        showModal(){
+        showModal() {
             this.modal.show = true;
-            ajax(`categories?token=${store.token}`)
-                .then(async r => this.categories = await r.json());
-
-            ajax(`types_movement?token=${store.token}`)
-                .then(async r => this.types_movement = await r.json());
-
             el('body').classList.add('modal-open');
         },
-        registerMovement(){
+        registerMovement() {
             this.modal.show = false;
-            ajax(`movements?token=${store.token}&wallet_id=${this.$route.params.id}`, 'POST', this.newMovement)
-                .then(r => {
-                    if(r.status == 200){
-
-                        el('body').classList.remove('modal-open');
-                        this.modal.show = false;
-                        this.getMovements();
-                        this.newMovement = {
-                            amount: '',
-                            type_movement_id: '',
-                            commentary: '',
-                            category_id: ''
-                        };
-                    }
-                })
+            this.movements.push({...this.newMovement, type: {name: `type ${this.newMovement.type_movement_id}`}});
+            this.newMovement = {
+                amount: '',
+                type_movement_id: '',
+                commentary: '',
+                category_id: ''
+            };
+            el('body').classList.remove('modal-open');
         },
-        filter(id){
+        filter(id) {
             this.movementFilter = id;
         },
-        deleteMovement(movement){
-            ajax(`movements/${movement.id}?token=${store.token}`, 'DELETE')
-                .then(async r => {
-                    let data = await r.json();
-                    if(r.status == 200){
-                        this.movements.splice(this.movements.indexOf(movement), 1);
-                    }
-                });
+        deleteMovement(movement) {
+            this.movements.splice(this.movements.indexOf(movement), 1);
+
         }
     },
-    computed:{
-        avaiableMoney(){
+    computed: {
+        avaiableMoney() {
             let available = 0;
             this.movements.map(m => available += m.type_movement_id == 2 ? -float(m.amount) : int(m.amount));
             return available;
         },
-        typesMovement(){
+        typesMovement() {
             let types_movement = [];
-            this.movements.forEach(e => !types_movement.find(t => e.type.name == t.name) ? types_movement.push(e.type) : null );
+            this.movements.forEach(e => !types_movement.find(t => e.type.name == t.name) ? types_movement.push(e.type) : null);
             return types_movement;
         },
-        filterMovements(){
-            if(!this.movementFilter) return this.movements;
-            if(this.movementFilter.includes('-')) return this.movements.filter(m => new Date(m.created_at).getTime() >= new Date(this.movementFilter).getTime());
+        filterMovements() {
+            if (!this.movementFilter) return this.movements;
+            if (this.movementFilter.includes('-')) return this.movements.filter(m => new Date(m.created_at).getTime() >= new Date(this.movementFilter).getTime());
             return this.movements.filter(m => m.type.name.includes(this.movementFilter));
         }
     },
-    created(){
+    created() {
         this.getMovements();
     }
-}
+};
