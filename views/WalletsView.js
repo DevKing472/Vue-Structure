@@ -1,6 +1,6 @@
 const WalletsView = {
-    template: 
-    `
+    template:
+        `
     <section class="container">
         <h2>Wallets</h2>
         <Wallet
@@ -10,13 +10,23 @@ const WalletsView = {
         ></Wallet>        
     </section>
     `,
-    data(){
+    data() {
         return {
             wallets: [],
         }
     },
-    created(){
-        ajax(`wallets?token=${store.token}`)
-        .then(async r => this.wallets = await r.json());
+    created() {
+        this.wallets = [
+            {
+                name: 'Wallet 1',
+                description: 'example',
+                created_at: '26-03-2020'
+            },
+            {
+                name: 'Wallet 2',
+                description: 'example',
+                created_at: '26-03-2020'
+            }
+        ]
     },
-}
+};
