@@ -1,6 +1,6 @@
 const LoginView = {
-    template: 
-    `
+    template:
+        `
     <section class="container">    
         <div class="login-panel">
             <h2>Login</h2>
@@ -20,7 +20,7 @@ const LoginView = {
         </div>
     </section>
     `,
-    data(){
+    data() {
         return {
             login: {
                 username: undefined,
@@ -29,25 +29,19 @@ const LoginView = {
         }
     },
     methods: {
-        validLogin(){
+        validLogin() {
             el('#btn-login').disabled = true;
-
-            ajax('login', 'POST', this.login)
-            .then(async r => {
-                let data = await r.json();
-                if(r.status == 200){
-                    this.$emit('update-login', true);
-                    store.token = data.token;
-                    localStorage.token = data.token;
-                    this.$router.push({name: 'wallets'});
-                    el('#btn-login').disabled = false;
-                }else{
-                    alert(data.message);
-                    el('#btn-login').disabled = false;
-                }
-
-            })
+            if (this.login.username === 'admin' && this.login.password === 'admin') {
+                this.$emit('update-login', true);
+                store.token = 'admin';
+                localStorage.token = 'admin';
+                this.$router.push({name: 'wallets'});
+                el('#btn-login').disabled = true;
+            } else {
+                alert("Datos de acceso incorrectos");
+                el('#btn-login').disabled = false;
+            }
         }
-        
+
     }
 }
