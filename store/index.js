@@ -1,8 +1,8 @@
-const store = { 
+const store = {
     token: localStorage.token ? localStorage.token : undefined,
-    login: localStorage.token ? true : false,
-    logout(){
+    login: !!localStorage.token,
+    logout() {
         localStorage.removeItem('token');
         return this.token = undefined;
     }
-}
+};

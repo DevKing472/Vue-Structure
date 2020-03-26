@@ -24,7 +24,7 @@ const routes = [
         component: MovementView,
         name: 'movements'
     }
-]
+];
 
 const router = new VueRouter({
     routes,

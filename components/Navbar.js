@@ -1,7 +1,7 @@
-Vue.component('Navbar',{
+Vue.component('Navbar', {
     props: ['login'],
-    template: 
-    `
+    template:
+        `
     <nav class="navbar">
         <h1 class="navbar-brand">Billetee</h1>
         <ul class="navbar-menu" v-if="!login">
@@ -14,11 +14,11 @@ Vue.component('Navbar',{
         </ul>
     </nav>
     `,
-    methods:{
-        logout(){
+    methods: {
+        logout() {
             this.$emit('update-login', false);
             store.logout();
             this.$router.push({name: 'index'});
         }
     },
-})
+});
