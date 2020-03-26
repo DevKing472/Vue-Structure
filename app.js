@@ -1,14 +1,14 @@
 const app = new Vue({
     el: '#app',
-    data(){
+    data() {
         return {
             login: store.login,
         }
     },
     methods: {
-        changeStateLogin(e){
+        changeStateLogin(e) {
             this.login = e;
         }
     },
     router,
-})
+});
